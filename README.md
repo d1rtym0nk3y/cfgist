@@ -14,3 +14,9 @@ Example
 ```
 
 The gists will be cached to cachePath if provided, to clear the cache just delete the files
+
+Compatibility
+-------------
+
+Uses Raiolo's enhanced createobject() to allow the loading of js.jar at runtime. To run on Adobe ColdFusion 
+you'll need to drop js.jar somewhere on your class path and remove the third argument to createobject
