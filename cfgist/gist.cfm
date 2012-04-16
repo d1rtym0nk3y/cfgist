@@ -2,13 +2,14 @@
 	<cfparam name="attributes.id" />
 	<cfparam name="attributes.cachePath" default="" />
 	<cfscript>
-	cacheFile = attributes.cachePath & attributes.id & ".js";
+	cacheFile = attributes.cachePath & attributes.id & ".html";
 	if(len(attributes.cachePath) && fileExists(cacheFile)) {
-		js = fileRead(cacheFile);
+		html = fileRead(cacheFile);
+		writeOutput(html);
+		exit;
 	}
 	else {
 		js = new http(url="https://gist.github.com/#attributes.id#.js").send().getPrefix().filecontent;
-		if(len(attributes.cachePath)) fileWrite(cacheFile, js);
 	}
 	</cfscript>
 	<cfsavecontent variable="javascriptCode">
@@ -35,6 +36,7 @@
 	scriptContext.initStandardObjects(globalScope);
 	globalScope.putProperty(globalScope, "variables", variables );
 	scriptContext.evaluateString(globalScope,variables.javascriptCode,"cf-rhino-script",0,javacast("null", 0));
+	if(len(attributes.cachePath)) fileWrite(cacheFile, buffer);
 	function java(class) {
 		return createObject("java", class, getdirectoryFromPath(getCurrentTemplatePath()) & "/js.jar");
 	}
